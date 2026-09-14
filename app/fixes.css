@@ -2396,12 +2396,37 @@ textarea:focus-visible {
 }
 
 /* Keep the complete admin login form inside short mobile browser viewports. */
+.admin-pin-field {
+  position: relative;
+  display: block;
+}
+
+.admin-pin-field input {
+  width: 100%;
+  padding-right: 4.5rem;
+}
+
+.admin-pin-field button {
+  position: absolute;
+  top: 50%;
+  right: .45rem;
+  min-width: 54px;
+  min-height: 40px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 6px;
+  background: rgba(37, 42, 34, .08);
+  color: var(--ink);
+  font-size: .72rem;
+  font-weight: 750;
+}
+
 @media (max-width: 760px) {
   .admin-login {
     min-height: 100svh;
     align-content: start;
     gap: 1.4rem;
-    padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(1.5rem, env(safe-area-inset-bottom));
+    padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem calc(6rem + env(safe-area-inset-bottom));
   }
 
   .admin-login h1 {
@@ -2426,9 +2451,15 @@ textarea:focus-visible {
   }
 
   .admin-login-form .admin-button {
-    display: block;
-    width: 100%;
-    min-height: 50px;
+    position: fixed;
+    z-index: 30;
+    right: 1.25rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    left: 1.25rem;
+    display: block !important;
+    width: auto;
+    min-height: 54px;
+    box-shadow: 0 8px 24px rgba(25, 38, 31, .2);
   }
 }
 
