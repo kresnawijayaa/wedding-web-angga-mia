@@ -118,21 +118,26 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
 
   return (
     <main className="site">
-      <button className="music" type="button" onClick={toggleMusic} disabled={musicUnavailable} aria-pressed={musicPlaying} aria-label={musicUnavailable ? "Background music unavailable" : musicPlaying ? "Pause background music" : "Play background music"}>
+      <motion.button className={`music${musicPlaying ? " is-playing" : ""}`} type="button" onClick={toggleMusic} disabled={musicUnavailable} aria-pressed={musicPlaying} aria-label={musicUnavailable ? "Background music unavailable" : musicPlaying ? "Pause background music" : "Play background music"} initial={reduce ? false : { opacity: 0, scale: .9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: reduce ? 0 : 2.25, duration: reduce ? 0 : .55, ease: [0.22, 1, 0.36, 1] }}>
         {musicPlaying ? <Volume2 aria-hidden="true" /> : <VolumeX aria-hidden="true" />}
         <span>{musicUnavailable ? "Unavailable" : musicPlaying ? "Music on" : "Music off"}</span>
-      </button>
-      <section className="intro full">
-        <div className="intro-photo"><Image src="/images/photo-18.webp" alt="Airlangga and Agata smiling in the kitchen" fill preload quality={90} sizes="100vw" /></div>
-        <div className="intro-tint" />
-        <motion.div className="intro-copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}>
-          <p className="eyebrow">Save the date</p>
-          <h1>Airlangga<br/><span><em>&</em> Mia</span></h1>
-          <p className="intro-formal-names"><span>Airlangga Wijaya</span><i>&</i><span>Agata Mia Wira Omega</span></p>
-          <div className="intro-meta"><span>27 December 2026</span><span>Muntilan, Magelang</span></div>
-          <p className="intro-note">We would love to celebrate this special day with you.</p>
+      </motion.button>
+      <section className="intro intro-cinematic full">
+        <motion.div className="intro-photo intro-photo-cinematic" initial={reduce ? false : { opacity: 0, scale: 1.055, filter: "blur(7px) brightness(.68)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px) brightness(1)" }} transition={{ duration: reduce ? 0 : 1.25, ease: [0.22, 1, 0.36, 1] }}>
+          <div className="intro-photo-drift"><Image src="/images/photo-18.webp" alt="Airlangga and Agata smiling in the kitchen" fill preload quality={90} sizes="100vw" /></div>
         </motion.div>
-        <a className="scroll-cue" href="#story"><ChevronDown /><span>Begin the story</span></a>
+        <div className="intro-tint" />
+        <motion.div className="intro-copy intro-copy-cinematic" initial={reduce ? false : { clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)" }} animate={{ clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0 100%)" }} transition={{ delay: reduce ? 0 : .3, duration: reduce ? 0 : .9, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.p className="eyebrow" initial={reduce ? false : { opacity: 0, letterSpacing: ".3em" }} animate={{ opacity: 1, letterSpacing: ".19em" }} transition={{ delay: reduce ? 0 : .8, duration: reduce ? 0 : .7, ease: [0.22, 1, 0.36, 1] }}>Save the date</motion.p>
+          <h1>
+            <motion.span className="intro-name-primary" initial={reduce ? false : { opacity: 0, y: 40, filter: "blur(8px)", clipPath: "inset(100% 0 0 0)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0% 0 0 0)" }} transition={{ delay: reduce ? 0 : 1, duration: reduce ? 0 : 1, ease: [0.22, 1, 0.36, 1] }}>Airlangga</motion.span>
+            <motion.span className="intro-name-secondary" initial={reduce ? false : { opacity: 0, y: 36, filter: "blur(8px)", clipPath: "inset(100% 0 0 0)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0% 0 0 0)" }} transition={{ delay: reduce ? 0 : 1.2, duration: reduce ? 0 : 1, ease: [0.22, 1, 0.36, 1] }}><em>&</em> Mia</motion.span>
+          </h1>
+          <motion.p className="intro-formal-names" initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduce ? 0 : 1.65, duration: reduce ? 0 : .65, ease: [0.22, 1, 0.36, 1] }}><span>Airlangga Wijaya</span><i>&</i><span>Agata Mia Wira Omega</span></motion.p>
+          <motion.div className="intro-meta" initial={reduce ? false : { opacity: 0, y: 9 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduce ? 0 : 1.85, duration: reduce ? 0 : .65, ease: [0.22, 1, 0.36, 1] }}><span>27 December 2026</span><span>Muntilan, Magelang</span></motion.div>
+          <motion.p className="intro-note" initial={reduce ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduce ? 0 : 2.05, duration: reduce ? 0 : .65, ease: [0.22, 1, 0.36, 1] }}>We would love to celebrate this special day with you.</motion.p>
+        </motion.div>
+        <motion.a className="scroll-cue intro-scroll-cue" href="#story" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduce ? 0 : 2.35, duration: reduce ? 0 : .6 }}><ChevronDown aria-hidden="true"/><span>Begin the story</span></motion.a>
       </section>
 
       <section className="opening paper" id="story">

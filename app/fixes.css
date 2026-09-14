@@ -2537,6 +2537,188 @@ textarea:focus-visible {
   }
 }
 
+/* Cinematic opening — intentionally scoped to the first post-open hero. */
+.intro-cinematic {
+  height: 100svh;
+  min-height: 100svh;
+  isolation: isolate;
+  background: #2d3028;
+}
+
+@supports (height: 100dvh) {
+  .intro-cinematic {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+}
+
+.intro-cinematic .intro-photo-cinematic {
+  z-index: 0;
+  overflow: hidden;
+  will-change: transform, opacity, filter;
+}
+
+.intro-photo-drift {
+  position: absolute;
+  inset: -2%;
+  animation: intro-camera-breathe 16s 1.4s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+  will-change: transform;
+}
+
+.intro-cinematic .intro-tint {
+  z-index: 1;
+}
+
+.intro-cinematic::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: -24%;
+  right: -35%;
+  width: min(90vw, 900px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 224, 171, .18) 0%, rgba(255, 235, 202, .09) 34%, transparent 69%);
+  filter: blur(34px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: intro-warm-light 11s 1s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+  will-change: transform, opacity;
+}
+
+.intro-cinematic::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.52'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: .025;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.intro-copy-cinematic {
+  z-index: 4;
+  will-change: clip-path;
+}
+
+.intro-copy-cinematic .intro-name-primary {
+  display: block;
+  margin: 0;
+}
+
+.intro-copy-cinematic .intro-name-secondary {
+  display: inline-block;
+}
+
+.intro-scroll-cue {
+  z-index: 5;
+}
+
+.intro-scroll-cue svg {
+  animation: intro-scroll-invite 2.2s 3s cubic-bezier(.45, 0, .55, 1) infinite;
+}
+
+.music.is-playing::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid rgba(244, 238, 226, .55);
+  pointer-events: none;
+  animation: intro-audio-ring 2.8s cubic-bezier(.22, 1, .36, 1) infinite;
+}
+
+.music.is-playing svg {
+  animation: intro-audio-breathe 2.8s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+}
+
+@keyframes intro-camera-breathe {
+  0% { transform: translate3d(0, 0, 0) scale(1.03); }
+  55% { transform: translate3d(-.45%, -.3%, 0) scale(1.065); }
+  100% { transform: translate3d(.2%, -.15%, 0) scale(1.04); }
+}
+
+@keyframes intro-warm-light {
+  0% { opacity: .68; transform: translate3d(0, 0, 0) scale(.96); }
+  100% { opacity: 1; transform: translate3d(-9%, 8%, 0) scale(1.06); }
+}
+
+@keyframes intro-scroll-invite {
+  0%, 100% { opacity: .42; transform: translate3d(0, -2px, 0); }
+  50% { opacity: 1; transform: translate3d(0, 5px, 0); }
+}
+
+@keyframes intro-audio-ring {
+  0% { opacity: .45; transform: scale(1); }
+  72%, 100% { opacity: 0; transform: scale(1.2); }
+}
+
+@keyframes intro-audio-breathe {
+  from { opacity: .72; transform: scale(.96); }
+  to { opacity: 1; transform: scale(1.04); }
+}
+
+@media (max-width: 760px) and (orientation: portrait) {
+  .intro-copy-cinematic {
+    border: 1px solid rgba(255, 255, 255, .28);
+    border-left: 0;
+    background: rgba(241, 235, 223, .935);
+    box-shadow: 0 24px 70px rgba(31, 29, 23, .13), 0 1px 0 rgba(255, 255, 255, .42) inset;
+    backdrop-filter: blur(7px) saturate(.92);
+    -webkit-backdrop-filter: blur(7px) saturate(.92);
+  }
+
+  .intro-copy-cinematic h1 {
+    text-wrap: balance;
+  }
+
+  .intro-copy-cinematic .intro-name-primary {
+    margin: 0;
+  }
+
+  .intro-copy-cinematic .intro-name-secondary {
+    display: block;
+    margin: .04em 0 0 clamp(1.25rem, 7vw, 2rem);
+  }
+
+  .intro-cinematic .intro-photo-drift img {
+    object-position: 59% 72%;
+  }
+
+  .intro-cinematic::before {
+    top: 19%;
+    right: -62%;
+    width: 120vw;
+    opacity: .75;
+  }
+}
+
+@media (max-width: 370px) and (orientation: portrait) {
+  .intro-copy-cinematic .intro-name-secondary {
+    margin-left: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-photo-drift,
+  .intro-cinematic::before,
+  .intro-scroll-cue svg,
+  .music.is-playing::after,
+  .music.is-playing svg {
+    animation: none !important;
+  }
+
+  .intro-photo-drift {
+    transform: scale(1.03);
+  }
+
+  .intro-cinematic .intro-photo-cinematic,
+  .intro-copy-cinematic {
+    will-change: auto;
+  }
+}
+
 /* Keep the complete admin login form inside short mobile browser viewports. */
 .admin-pin-field {
   position: relative;
