@@ -22,9 +22,9 @@ async function requireAdmin() {
 
 export async function loginAdmin(_: AdminFormState, formData: FormData): Promise<AdminFormState> {
   const username = String(formData.get("username") ?? "").trim();
-  const password = String(formData.get("password") ?? "");
+  const pin = String(formData.get("pin") ?? "");
   if (!(await consumeRateLimit("admin-login", username.toLowerCase() || "empty", 5, 15 * 60_000))) return { status: "error", message: "Terlalu banyak percobaan login. Silakan tunggu 15 menit." };
-  if (!verifyAdminCredentials(username, password)) return { status: "error", message: "Username atau password tidak sesuai." };
+  if (!verifyAdminCredentials(username, pin)) return { status: "error", message: "Username atau PIN tidak sesuai." };
   await createAdminSession();
   redirect("/admin");
 }

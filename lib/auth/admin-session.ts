@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createHmac, scryptSync, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 
 const COOKIE_NAME = "wedding_admin";
@@ -16,14 +16,12 @@ function sign(payload: string) {
   return createHmac("sha256", appSecret()).update(payload).digest("base64url");
 }
 
-export function verifyAdminCredentials(username: string, password: string) {
+export function verifyAdminCredentials(username: string, pin: string) {
   const expectedUsername = process.env.ADMIN_USERNAME;
-  const encoded = process.env.ADMIN_PASSWORD_HASH;
-  if (!expectedUsername || username !== expectedUsername || !encoded?.startsWith("scrypt:")) return false;
-  const [, salt, expectedHex] = encoded.split(":");
-  if (!salt || !expectedHex) return false;
-  const actual = scryptSync(password, salt, 64);
-  const expected = Buffer.from(expectedHex, "hex");
+  const expectedPin = process.env.ADMIN_PIN;
+  if (!expectedUsername || username !== expectedUsername || !expectedPin || !/^\d{4}$/.test(expectedPin) || !/^\d{4}$/.test(pin)) return false;
+  const actual = Buffer.from(pin);
+  const expected = Buffer.from(expectedPin);
   return actual.length === expected.length && timingSafeEqual(actual, expected);
 }
 

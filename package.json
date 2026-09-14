@@ -12,8 +12,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx scripts/seed.ts",
-    "db:refresh-links": "tsx scripts/refresh-invitation-links.ts",
-    "admin:hash": "tsx scripts/hash-admin-password.ts"
+    "db:refresh-links": "tsx scripts/refresh-invitation-links.ts"
   },
   "dependencies": {
     "@fontsource-variable/instrument-sans": "latest",

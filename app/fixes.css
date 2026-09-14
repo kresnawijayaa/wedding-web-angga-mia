@@ -2395,6 +2395,58 @@ textarea:focus-visible {
   }
 }
 
+/* Keep the complete admin login form inside short mobile browser viewports. */
+@media (max-width: 760px) {
+  .admin-login {
+    min-height: 100svh;
+    align-content: start;
+    gap: 1.4rem;
+    padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .admin-login h1 {
+    margin: .15em 0;
+    font-size: clamp(3rem, 16vw, 4rem);
+    line-height: .9;
+  }
+
+  .admin-login > div > p:last-child {
+    margin-top: .8rem;
+    font-size: .9rem;
+    line-height: 1.45;
+  }
+
+  .admin-login-form {
+    gap: .8rem;
+  }
+
+  .admin-login-form input {
+    min-height: 50px;
+    font-size: 16px;
+  }
+
+  .admin-login-form .admin-button {
+    display: block;
+    width: 100%;
+    min-height: 50px;
+  }
+}
+
+@media (max-height: 700px) and (max-width: 760px) {
+  .admin-login {
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+
+  .admin-login h1 {
+    font-size: 2.8rem;
+  }
+
+  .admin-login > div > p:last-child {
+    display: none;
+  }
+}
+
 /* Compact admin controls and mobile-first guest operations. */
 .admin-message-launcher {
   display: flex;
