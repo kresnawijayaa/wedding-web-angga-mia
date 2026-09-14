@@ -606,6 +606,18 @@ textarea:focus-visible {
   background: #eee8dc;
 }
 
+.admin-login,
+.admin-message-dialog {
+  --admin-bg: #f2f4f3;
+  --admin-surface: #ffffff;
+  --admin-soft: #f7f8f7;
+  --admin-border: #dce1de;
+  --admin-text: #1d2521;
+  --admin-muted: #66716b;
+  --admin-green: #196b4b;
+  --admin-green-dark: #11543a;
+}
+
 .admin-header,
 .admin-section-title,
 .admin-header-actions,
@@ -2395,6 +2407,99 @@ textarea:focus-visible {
   }
 }
 
+/* Canonical admin login layout. Keep this block last to avoid legacy overrides. */
+.admin-login-panel {
+  width: 100%;
+  max-width: 480px;
+}
+
+.admin-login .admin-login-form {
+  width: 100%;
+}
+
+.admin-login .admin-pin-field button {
+  color: var(--admin-text, #1d2521);
+}
+
+.admin-login .admin-login-submit {
+  position: static;
+  display: inline-flex !important;
+  width: 100%;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: var(--admin-green, #196b4b);
+  color: #f7fbf8;
+  box-shadow: none;
+  font-weight: 750;
+}
+
+.admin-login .admin-login-submit:hover:not(:disabled) {
+  background: var(--admin-green-dark, #11543a);
+}
+
+.admin-login .admin-login-submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+@media (max-width: 760px) {
+  .admin-login {
+    min-height: 100svh;
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: clamp(1.5rem, 5vh, 2.5rem);
+    padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .admin-login-intro h1 {
+    margin: .16em 0;
+    font-size: clamp(3.25rem, 15vw, 4.25rem);
+    line-height: .88;
+  }
+
+  .admin-login-intro > p:last-child {
+    max-width: 32rem;
+    margin: .8rem 0 0;
+    font-size: .9rem;
+    line-height: 1.45;
+  }
+
+  .admin-login-panel {
+    max-width: none;
+  }
+
+  .admin-login .admin-login-form {
+    gap: .85rem;
+  }
+
+  .admin-login .admin-login-form input {
+    min-height: 52px;
+    font-size: 16px;
+  }
+
+  .admin-login .admin-login-submit {
+    min-height: 52px;
+    margin-top: .15rem;
+  }
+}
+
+@media (max-height: 700px) and (max-width: 760px) {
+  .admin-login {
+    gap: 1rem;
+    padding-top: max(.85rem, env(safe-area-inset-top));
+  }
+
+  .admin-login-intro h1 {
+    font-size: 2.8rem;
+  }
+
+  .admin-login-intro > p:last-child {
+    display: none;
+  }
+}
+
 /* Keep the complete admin login form inside short mobile browser viewports. */
 .admin-pin-field {
   position: relative;
@@ -2970,5 +3075,64 @@ textarea:focus-visible {
   .admin-mobile-list article > header .status {
     grid-column: auto;
     justify-self: auto;
+  }
+}
+
+/* Admin login final cascade: normal flow, visible action, safe on every viewport. */
+.admin-login .admin-login-submit {
+  position: static;
+  inset: auto;
+  display: inline-flex !important;
+  width: 100%;
+  min-height: 52px;
+  margin: .15rem 0 0;
+  align-items: center;
+  justify-content: center;
+  background: var(--admin-green, #196b4b);
+  color: #f7fbf8;
+  box-shadow: none;
+}
+
+@media (max-width: 760px) {
+  .admin-login {
+    min-height: 100svh;
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: clamp(1.5rem, 5vh, 2.5rem);
+    padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .admin-login-intro h1 {
+    margin: .16em 0;
+    font-size: clamp(3.25rem, 15vw, 4.25rem);
+    line-height: .88;
+  }
+
+  .admin-login-intro > p:last-child {
+    display: block;
+    margin: .8rem 0 0;
+    font-size: .9rem;
+    line-height: 1.45;
+  }
+
+  .admin-login-panel,
+  .admin-login .admin-login-form {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+@media (max-height: 700px) and (max-width: 760px) {
+  .admin-login {
+    gap: 1rem;
+    padding-top: max(.85rem, env(safe-area-inset-top));
+  }
+
+  .admin-login-intro h1 {
+    font-size: 2.8rem;
+  }
+
+  .admin-login-intro > p:last-child {
+    display: none;
   }
 }

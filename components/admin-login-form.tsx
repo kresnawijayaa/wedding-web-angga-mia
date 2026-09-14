@@ -18,7 +18,7 @@ export function AdminLoginForm() {
         </span>
       </label>
       {state.message && <p className="form-message error" role="alert">{state.message}</p>}
-      <button className="admin-button" disabled={pending}>{pending ? "Checking…" : "Sign in"}</button>
+      <button className="admin-button admin-login-submit" disabled={pending}>{pending ? "Checking…" : "Sign in"}</button>
     </form>
   );
 }
