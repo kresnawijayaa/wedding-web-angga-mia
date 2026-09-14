@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
+import { X } from "lucide-react";
 import { updateWhatsappTemplate, type AdminFormState } from "@/app/admin/actions";
 import { DEFAULT_WHATSAPP_TEMPLATE, renderWhatsappTemplate } from "@/lib/whatsapp-template";
 
@@ -41,7 +42,7 @@ export function AdminWhatsappTemplate({ initialTemplate }: { initialTemplate: st
         <div className="admin-dialog-shell">
           <div className="admin-dialog-header">
             <div><p className="admin-kicker">Message settings</p><h2 id="whatsapp-dialog-title">WhatsApp invitation</h2></div>
-            <button className="admin-dialog-close" type="button" aria-label="Close message settings" onClick={() => dialogRef.current?.close()}>×</button>
+            <button className="admin-dialog-close" type="button" aria-label="Close message settings" onClick={() => dialogRef.current?.close()}><X aria-hidden="true"/></button>
           </div>
           <p className="admin-dialog-note">Every guest’s WhatsApp button will use this template. Changes are shared across devices.</p>
           <div className="admin-message-grid">

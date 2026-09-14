@@ -1,5 +1,6 @@
 import { and, count, desc, eq, ilike, isNull, or } from "drizzle-orm";
 import { redirect } from "next/navigation";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { AdminGuestForm } from "@/components/admin-guest-form";
 import { AdminGuestImport } from "@/components/admin-guest-import";
 import { AdminGuestTable, type AdminGuestRow } from "@/components/admin-guest-table";
@@ -88,7 +89,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         </form>
         <p className="admin-result-count">{filteredCount} guest{filteredCount === 1 ? "" : "s"} found</p>
         <AdminGuestTable rows={tableRows}/>
-        {totalPages > 1 && <nav className="admin-pagination" aria-label="Guest pages"><a aria-disabled={page === 1} href={page > 1 ? pageHref(page - 1) : undefined}>← Previous</a><span>Page {page} of {totalPages}</span><a aria-disabled={page === totalPages} href={page < totalPages ? pageHref(page + 1) : undefined}>Next →</a></nav>}
+        {totalPages > 1 && <nav className="admin-pagination" aria-label="Guest pages"><a aria-disabled={page === 1} href={page > 1 ? pageHref(page - 1) : undefined}><ArrowLeft aria-hidden="true"/>Previous</a><span>Page {page} of {totalPages}</span><a aria-disabled={page === totalPages} href={page < totalPages ? pageHref(page + 1) : undefined}>Next<ArrowRight aria-hidden="true"/></a></nav>}
       </section>
 
       <section className="admin-section">

@@ -45,6 +45,7 @@ This document is the implementation contract for the invitation and its admin wo
 
 ## 3. Interaction rules
 
+- Interface icons use `lucide-react` with consistent stroke weight. Never use emoji or Unicode arrows as control icons because their appearance varies by platform.
 - Every primary action contains visible text in its default, loading, disabled, focus, and error states.
 - Touch targets are at least 44×44px.
 - Primary actions use filled green; secondary actions use a bordered neutral surface; destructive actions are never visually confused with primary actions.

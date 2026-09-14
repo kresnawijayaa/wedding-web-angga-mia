@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { CalendarDays, Check, ChevronDown, Copy, MapPin, Volume2, VolumeX } from "lucide-react";
+import { ArrowDownRight, CalendarDays, Check, ChevronDown, Copy, ExternalLink, MapPin, Volume2, VolumeX } from "lucide-react";
 import { PhotoReveal, Reveal } from "./reveal";
 import { saveRsvp, sendWish, type FormState } from "@/app/actions";
 
@@ -109,7 +109,7 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
           <h1 key="b">Airlangga <em>&</em> Mia</h1>,
           <p className="cover-date" key="c">27 December 2026 <span>Muntilan, Magelang</span></p>,
           <div className="guest" key="d"><small>Specially invited</small><strong>{guest.name}</strong></div>,
-          <button className="primary light" onClick={openInvitation} key="e">Open invitation <span>↘</span></button>
+          <button className="primary light" onClick={openInvitation} key="e">Open invitation <ArrowDownRight aria-hidden="true"/></button>
         ].map((child, i) => <motion.div key={i} variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: .85, ease: [0.16, 1, 0.3, 1] } } }}>{child}</motion.div>)}
       </motion.div>
       <p className="cover-note">A life made together</p>
@@ -164,7 +164,7 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
           <Reveal className="event" delay={.1}><span className="event-no">01</span><div><p className="eyebrow">Holy matrimony</p><h3>10.00—12.00</h3><p><strong>Gereja Katolik St. Antonius Padua, Muntilan</strong><br/>Muntilan, Magelang · Central Java</p><p className="event-note">Sunday, 27 December 2026.</p><a href={venueUrl} target="_blank" rel="noreferrer">View location <MapPin /></a></div></Reveal>
           <Reveal className="event" delay={.2}><span className="event-no">02</span><div><p className="eyebrow">Wedding reception</p><h3>13.30—15.30</h3><p><strong>St. Antonius Padua Catholic Church Courtyard</strong><br/>Muntilan, Magelang</p><p className="event-note">The reception will be held after the holy matrimony, in the church courtyard.</p><a href={venueUrl} target="_blank" rel="noreferrer">View location <MapPin /></a></div></Reveal>
         </div>
-        <Reveal className="calendar-link"><CalendarDays/><span>Sunday<br/><strong>27 December 2026</strong></span><a href="/calendar">Add to calendar ↗</a></Reveal>
+        <Reveal className="calendar-link"><CalendarDays/><span>Sunday<br/><strong>27 December 2026</strong></span><a href="/calendar">Add to calendar <ExternalLink aria-hidden="true"/></a></Reveal>
       </section>
 
       <section className="date-spread paper">
@@ -205,7 +205,7 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
             {attendance === "yes" && <fieldset><legend>Number of guests</legend><div className="guest-count">{Array.from({ length: guest.maxGuests }, (_, index) => index + 1).map(count => <label key={count}><input type="radio" name="count" value={count} defaultChecked={count === (initialRsvp?.guestCount || 1)}/><span><b>{count}</b><small>Guest{count > 1 ? "s" : ""}</small></span></label>)}</div></fieldset>}
             <label className="textarea">Message for the couple <textarea name="message" maxLength={800} defaultValue={initialRsvp?.message} placeholder="Optional" rows={4}/></label>
             {rsvpState.status === "error" && <p className="form-message error" role="alert">{rsvpState.message}</p>}
-            <button className="primary" type="submit" disabled={rsvpPending}>{rsvpPending ? "Saving…" : initialRsvp ? "Update attendance" : "Confirm attendance"} <span>↘</span></button>
+            <button className="primary" type="submit" disabled={rsvpPending}>{rsvpPending ? "Saving…" : initialRsvp ? "Update attendance" : "Confirm attendance"} <ArrowDownRight aria-hidden="true"/></button>
           </form>}
         </Reveal>
       </section>
@@ -224,7 +224,7 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
 
       <section className="wishes-section ink">
         <Reveal className="wishes-intro"><p className="eyebrow">Wishes</p><h2>Leave us<br/><i>a note.</i></h2><p>A few words from you would mean a lot to us.</p><div className="wish-name"><span>Your name</span><strong>{guest.name}</strong></div></Reveal>
-        <Reveal className="wish-form" delay={.1}><form action={wishAction}><label className="textarea">Your message<textarea name="wish" required minLength={3} maxLength={600} placeholder="Write something for Airlangga & Agata…" rows={5}/></label>{wishState.message && <p className={`form-message ${wishState.status}`} aria-live="polite">{wishState.message}</p>}<button className="primary light" disabled={wishPending}>{wishPending ? "Sending…" : "Send wishes"}<span>↘</span></button></form></Reveal>
+        <Reveal className="wish-form" delay={.1}><form action={wishAction}><label className="textarea">Your message<textarea name="wish" required minLength={3} maxLength={600} placeholder="Write something for Airlangga & Agata…" rows={5}/></label>{wishState.message && <p className={`form-message ${wishState.status}`} aria-live="polite">{wishState.message}</p>}<button className="primary light" disabled={wishPending}>{wishPending ? "Sending…" : "Send wishes"}<ArrowDownRight aria-hidden="true"/></button></form></Reveal>
         <div className="wish-list">{approvedWishes.length ? approvedWishes.map((wish, index) => <Reveal className="wish-item" delay={(index % 3) * .06} key={wish.id}><p>“{wish.message}”</p><span>— {wish.name}</span></Reveal>) : <Reveal className="wish-empty"><p>Your words will become part of this story.</p><span>Be the first to leave a note.</span></Reveal>}</div>
       </section>
 

@@ -2436,6 +2436,43 @@ textarea:focus-visible {
   font-weight: 750;
 }
 
+.primary > svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  stroke-width: 1.6;
+  transition: transform .25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.primary:hover > svg {
+  transform: translate(2px, 2px);
+}
+
+.calendar-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.calendar-link a svg,
+.admin-action-button svg,
+.admin-pagination svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  stroke-width: 1.8;
+}
+
+.admin-dialog-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.admin-action-button,
+.admin-pagination a {
+  gap: .38rem;
+}
+
 .admin-login .admin-login-submit:hover:not(:disabled) {
   background: var(--admin-green-dark, #11543a);
 }
@@ -3021,12 +3058,18 @@ textarea:focus-visible {
   }
 
   .admin-mobile-more > summary::after {
-    content: "⌄";
-    margin-left: .35rem;
+    content: "";
+    width: 6px;
+    height: 6px;
+    margin: -.2rem 0 0 .5rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform .2s cubic-bezier(.22, 1, .36, 1);
   }
 
   .admin-mobile-more[open] > summary::after {
-    content: "⌃";
+    transform: translateY(3px) rotate(225deg);
   }
 
   .admin-mobile-more-content {
