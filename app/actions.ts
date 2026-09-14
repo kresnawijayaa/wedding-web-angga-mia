@@ -19,7 +19,8 @@ export async function saveRsvp(_: FormState, formData: FormData): Promise<FormSt
   const guest = await currentGuest();
   if (!guest) return { status: "error", message: "Sesi undangan berakhir. Silakan buka kembali tautan undangan Anda." };
   if (!(await consumeRateLimit("rsvp", guest.id, 10, 10 * 60_000))) return { status: "error", message: "Terlalu banyak perubahan dalam waktu singkat. Coba lagi beberapa menit lagi." };
-  const attendance = formData.get("attendance") === "yes" ? "attending" : formData.get("attendance") === "no" ? "not_attending" : null;
+  const attendanceValue = String(formData.get("attendance") ?? "");
+  const attendance = attendanceValue === "yes" ? "attending" : attendanceValue === "no" ? "not_attending" : null;
   if (!attendance) return { status: "error", message: "Pilih konfirmasi kehadiran terlebih dahulu." };
   const requestedCount = attendance === "attending" ? Number(formData.get("count")) : 0;
   if (!Number.isInteger(requestedCount) || requestedCount < 0 || requestedCount > guest.maxGuests) return { status: "error", message: `Jumlah tamu maksimal untuk undangan ini adalah ${guest.maxGuests}.` };
