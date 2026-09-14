@@ -69,9 +69,9 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
 
   function openInvitation() {
     setOpened(true);
-    const audio = new Audio("/audio/turning-page-instrumental.mp3");
+    const audio = new Audio("/audio/the-way-you-look-at-me.mp3");
     audio.loop = true;
-    audio.volume = 0.32;
+    audio.volume = 0.4;
     audio.preload = "auto";
     audio.addEventListener("error", () => setMusicUnavailable(true), { once: true });
     audioRef.current = audio;
