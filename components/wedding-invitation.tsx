@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useActionState, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
-import { ArrowDownRight, CalendarDays, Check, ChevronDown, Copy, ExternalLink, MapPin, Volume2, VolumeX } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ArrowDownRight, CalendarDays, Check, ChevronDown, Copy, ExternalLink, MapPin, VolumeX } from "lucide-react";
 import { PhotoReveal, Reveal } from "./reveal";
 import { saveRsvp, sendWish, type FormState } from "@/app/actions";
 
@@ -52,10 +52,14 @@ type InvitationProps = {
 const initialFormState: FormState = { status: "idle", message: "" };
 
 export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }: InvitationProps) {
-  const [opened, setOpened] = useState(false);
+  const [experience, setExperience] = useState<"cover" | "opening" | "transition" | "hero">("cover");
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [musicUnavailable, setMusicUnavailable] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const openingStartedRef = useRef(0);
+  const openingResolvedRef = useRef(false);
+  const openingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [attendance, setAttendance] = useState(initialRsvp?.attendance === "not_attending" ? "no" : "yes");
   const [copied, setCopied] = useState<string | null>(null);
   const [rsvpState, rsvpAction, rsvpPending] = useActionState(saveRsvp, initialFormState);
@@ -63,21 +67,50 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
   const reduce = useReducedMotion();
 
   useEffect(() => () => {
+    if (openingTimerRef.current) clearTimeout(openingTimerRef.current);
+    if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current);
     audioRef.current?.pause();
     audioRef.current = null;
   }, []);
 
+  function revealHeroWhenReady() {
+    if (openingResolvedRef.current) return;
+    openingResolvedRef.current = true;
+    if (openingTimerRef.current) clearTimeout(openingTimerRef.current);
+    if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current);
+    const elapsed = performance.now() - openingStartedRef.current;
+    const remaining = Math.max(0, 4800 - elapsed);
+    openingTimerRef.current = setTimeout(() => {
+      setExperience("transition");
+      openingTimerRef.current = setTimeout(() => setExperience("hero"), reduce ? 80 : 850);
+    }, remaining);
+  }
+
   function openInvitation() {
-    setOpened(true);
+    if (experience !== "cover") return;
+    openingStartedRef.current = performance.now();
+    openingResolvedRef.current = false;
+    setExperience("opening");
     const audio = new Audio("/audio/the-way-you-look-at-me.mp3");
     audio.loop = true;
     audio.volume = 0.4;
     audio.preload = "auto";
-    audio.addEventListener("error", () => setMusicUnavailable(true), { once: true });
-    audioRef.current = audio;
-    void audio.play().then(() => setMusicPlaying(true)).catch(() => {
+    const handlePlaying = () => {
+      setMusicPlaying(true);
+      revealHeroWhenReady();
+    };
+    const handleFailure = () => {
       setMusicPlaying(false);
-    });
+      setMusicUnavailable(true);
+      revealHeroWhenReady();
+    };
+    audio.addEventListener("playing", handlePlaying, { once: true });
+    audio.addEventListener("error", handleFailure, { once: true });
+    audioRef.current = audio;
+    fallbackTimerRef.current = setTimeout(revealHeroWhenReady, 9000);
+    void audio.play().then(() => {
+      if (!audio.paused && audio.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) handlePlaying();
+    }).catch(handleFailure);
   }
 
   async function toggleMusic() {
@@ -96,8 +129,9 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
     }
   }
 
-  if (!opened) return (
-    <main className="cover">
+  if (experience !== "hero") return (
+    <AnimatePresence mode="sync">
+    {experience === "cover" ? <motion.main className="cover" key="cover" exit={reduce ? undefined : { opacity: 0, scale: 1.018, filter: "blur(3px)" }} transition={{ duration: .8, ease: [0.22, 1, 0.36, 1] }}>
       <motion.div className="cover-photo" initial={reduce ? false : { scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}>
         <Image src="/images/photo-12.webp" alt="Airlangga and Agata cooking together" fill preload quality={90} sizes="100vw" />
       </motion.div>
@@ -113,13 +147,23 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
         ].map((child, i) => <motion.div key={i} variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: .85, ease: [0.16, 1, 0.3, 1] } } }}>{child}</motion.div>)}
       </motion.div>
       <p className="cover-note">A life made together</p>
-    </main>
+    </motion.main> : <motion.main className={`invitation-opening${experience === "transition" ? " is-leaving" : ""}`} key="opening" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: reduce ? 0 : .8 }}>
+      <div className="opening-film-photo"><Image src="/images/photo-18.webp" alt="" fill priority quality={90} sizes="100vw"/></div>
+      <div className="opening-film-shade"/>
+      <div className="opening-film-grain"/>
+      <div className="opening-mark" aria-label="Airlangga and Mia">
+        <span>A</span><i/><em>&</em><i/><span>M</span>
+        <small>27 · 12 · 2026</small>
+      </div>
+      <div className="opening-wipe" aria-hidden="true"/>
+    </motion.main>}
+    </AnimatePresence>
   );
 
   return (
     <main className="site">
-      <motion.button className={`music${musicPlaying ? " is-playing" : ""}`} type="button" onClick={toggleMusic} disabled={musicUnavailable} aria-pressed={musicPlaying} aria-label={musicUnavailable ? "Background music unavailable" : musicPlaying ? "Pause background music" : "Play background music"} initial={reduce ? false : { opacity: 0, scale: .9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: reduce ? 0 : 2.25, duration: reduce ? 0 : .55, ease: [0.22, 1, 0.36, 1] }}>
-        {musicPlaying ? <Volume2 aria-hidden="true" /> : <VolumeX aria-hidden="true" />}
+      <motion.button className={`music${musicPlaying ? " is-playing" : ""}`} type="button" onClick={toggleMusic} disabled={musicUnavailable} aria-pressed={musicPlaying} aria-label={musicUnavailable ? "Background music unavailable" : musicPlaying ? "Pause background music" : "Play background music"} initial={reduce ? false : { opacity: 0, scale: .9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: reduce ? 0 : 3.25, duration: reduce ? 0 : .55, ease: [0.22, 1, 0.36, 1] }}>
+        {musicPlaying ? <span className="music-equalizer" aria-hidden="true"><i/><i/><i/></span> : <VolumeX aria-hidden="true" />}
         <span>{musicUnavailable ? "Unavailable" : musicPlaying ? "Music on" : "Music off"}</span>
       </motion.button>
       <section className="intro intro-cinematic full">
@@ -127,17 +171,21 @@ export function WeddingInvitation({ guest, initialRsvp, wishes: approvedWishes }
           <div className="intro-photo-drift"><Image src="/images/photo-18.webp" alt="Airlangga and Agata smiling in the kitchen" fill preload quality={90} sizes="100vw" /></div>
         </motion.div>
         <div className="intro-tint" />
-        <motion.div className="intro-copy intro-copy-cinematic" initial={reduce ? false : { clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)" }} animate={{ clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0 100%)" }} transition={{ delay: reduce ? 0 : .3, duration: reduce ? 0 : .9, ease: [0.22, 1, 0.36, 1] }}>
-          <motion.p className="eyebrow" initial={reduce ? false : { opacity: 0, letterSpacing: ".3em" }} animate={{ opacity: 1, letterSpacing: ".19em" }} transition={{ delay: reduce ? 0 : .8, duration: reduce ? 0 : .7, ease: [0.22, 1, 0.36, 1] }}>Save the date</motion.p>
-          <h1>
-            <motion.span className="intro-name-primary" initial={reduce ? false : { opacity: 0, y: 40, filter: "blur(8px)", clipPath: "inset(100% 0 0 0)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0% 0 0 0)" }} transition={{ delay: reduce ? 0 : 1, duration: reduce ? 0 : 1, ease: [0.22, 1, 0.36, 1] }}>Airlangga</motion.span>
-            <motion.span className="intro-name-secondary" initial={reduce ? false : { opacity: 0, y: 36, filter: "blur(8px)", clipPath: "inset(100% 0 0 0)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0% 0 0 0)" }} transition={{ delay: reduce ? 0 : 1.2, duration: reduce ? 0 : 1, ease: [0.22, 1, 0.36, 1] }}><em>&</em> Mia</motion.span>
-          </h1>
-          <motion.p className="intro-formal-names" initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduce ? 0 : 1.65, duration: reduce ? 0 : .65, ease: [0.22, 1, 0.36, 1] }}><span>Airlangga Wijaya</span><i>&</i><span>Agata Mia Wira Omega</span></motion.p>
-          <motion.div className="intro-meta" initial={reduce ? false : { opacity: 0, y: 9 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduce ? 0 : 1.85, duration: reduce ? 0 : .65, ease: [0.22, 1, 0.36, 1] }}><span>27 December 2026</span><span>Muntilan, Magelang</span></motion.div>
-          <motion.p className="intro-note" initial={reduce ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduce ? 0 : 2.05, duration: reduce ? 0 : .65, ease: [0.22, 1, 0.36, 1] }}>We would love to celebrate this special day with you.</motion.p>
-        </motion.div>
-        <motion.a className="scroll-cue intro-scroll-cue" href="#story" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduce ? 0 : 2.35, duration: reduce ? 0 : .6 }}><ChevronDown aria-hidden="true"/><span>Begin the story</span></motion.a>
+        <div className="intro-copy intro-copy-cinematic">
+          <div className="intro-title-group">
+            <motion.p className="eyebrow" initial={reduce ? false : { opacity: 0, letterSpacing: ".3em", filter: "blur(5px)" }} animate={{ opacity: 1, letterSpacing: ".19em", filter: "blur(0px)" }} transition={{ delay: reduce ? 0 : .7, duration: reduce ? 0 : .8, ease: [0.22, 1, 0.36, 1] }}>Save the date</motion.p>
+            <h1>
+              <motion.span className="intro-name-primary" initial={reduce ? false : { opacity: 0, y: 42, filter: "blur(9px)", clipPath: "inset(100% 0 0 0)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0% 0 0 0)" }} transition={{ delay: reduce ? 0 : 1.05, duration: reduce ? 0 : 1.15, ease: [0.22, 1, 0.36, 1] }}>Airlangga</motion.span>
+              <motion.span className="intro-name-secondary" initial={reduce ? false : { opacity: 0, y: 38, filter: "blur(9px)", clipPath: "inset(100% 0 0 0)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)", clipPath: "inset(0% 0 0 0)" }} transition={{ delay: reduce ? 0 : 1.3, duration: reduce ? 0 : 1.15, ease: [0.22, 1, 0.36, 1] }}><em>&</em> Mia</motion.span>
+            </h1>
+            <motion.p className="intro-formal-names" initial={reduce ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduce ? 0 : 2.1, duration: reduce ? 0 : .75, ease: [0.22, 1, 0.36, 1] }}><span>Airlangga Wijaya</span><i>&</i><span>Agata Mia Wira Omega</span></motion.p>
+          </div>
+          <div className="intro-detail-group">
+            <motion.div className="intro-meta" initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduce ? 0 : 2.5, duration: reduce ? 0 : .75, ease: [0.22, 1, 0.36, 1] }}><span>27 December 2026</span><span>Muntilan, Magelang</span></motion.div>
+            <motion.p className="intro-note" initial={reduce ? false : { opacity: 0, y: 9 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: reduce ? 0 : 2.8, duration: reduce ? 0 : .75, ease: [0.22, 1, 0.36, 1] }}>We would love to celebrate this special day with you.</motion.p>
+          </div>
+        </div>
+        <motion.a className="scroll-cue intro-scroll-cue" href="#story" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: reduce ? 0 : 3.65, duration: reduce ? 0 : .7 }}><ChevronDown aria-hidden="true"/><span>Begin the story</span></motion.a>
       </section>
 
       <section className="opening paper" id="story">
