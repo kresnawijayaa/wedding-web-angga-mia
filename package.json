@@ -1,0 +1,41 @@
+{
+  "name": "airlangga-agata-wedding",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:refresh-links": "tsx scripts/refresh-invitation-links.ts",
+    "admin:hash": "tsx scripts/hash-admin-password.ts"
+  },
+  "dependencies": {
+    "@fontsource-variable/instrument-sans": "latest",
+    "@fontsource-variable/playfair-display": "latest",
+    "@neondatabase/serverless": "^1.1.0",
+    "drizzle-orm": "^0.45.2",
+    "lucide-react": "latest",
+    "motion": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "read-excel-file": "^9.3.10",
+    "sharp": "^0.35.4",
+    "write-excel-file": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "dotenv": "^17.4.2",
+    "drizzle-kit": "^0.31.10",
+    "tsx": "^4.23.13",
+    "typescript": "latest"
+  }
+}
