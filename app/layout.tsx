@@ -3,6 +3,7 @@ import "@fontsource-variable/instrument-sans";
 import "@fontsource-variable/playfair-display";
 import "./globals.css";
 import "./fixes.css";
+import "./invitation-refinements.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://togetherforever.id"),

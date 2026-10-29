@@ -1,0 +1,223 @@
+/* Invitation-only editorial rhythm. Kept after legacy styles, outside admin UI. */
+.editorial-invitation {
+  --section-gutter: max(1.25rem, calc((100vw - 1200px) / 2));
+  --section-space: clamp(3.5rem, 7vw, 6rem);
+  --content-gap: clamp(1.5rem, 4vw, 3.5rem);
+  --editorial-rule: rgba(77, 70, 49, .24);
+}
+.editorial-invitation > :is(.opening, .couple, .wedding-schedule, .faq, .gift, .wishes-section) {
+  height: auto;
+  min-height: 0;
+  padding: var(--section-space) var(--section-gutter);
+}
+.editorial-invitation :is(h2, h3) { text-wrap: balance; }
+.editorial-invitation :is(.section-heading, .faq-title, .wishes-intro, .gift > div) h2 {
+  font-size: clamp(2.75rem, 6vw, 5.25rem);
+  line-height: 1.06;
+  margin: .2em 0 .5em;
+}
+.editorial-invitation .eyebrow {
+  font-size: .68rem;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: .16em;
+  margin-bottom: .85rem;
+}
+.editorial-invitation :is(.opening-text, .gift, .wishes-intro, .faq-list) p {
+  line-height: 1.8;
+}
+.editorial-invitation .ambient-detail { margin-bottom: .85rem; }
+.editorial-invitation .schedule-divider .ambient-detail,
+.editorial-invitation .schedule-icon .ambient-detail { margin-bottom: 0; }
+
+/* The opening photograph remains immersive; its title and note share one flow. */
+.editorial-invitation .intro-cinematic {
+  display: flex;
+  align-items: flex-start;
+  height: auto;
+  min-height: clamp(35rem, 82svh, 55rem);
+  padding: clamp(5rem, 11vw, 8rem) var(--section-gutter) 5rem;
+}
+.editorial-invitation .intro-cinematic .intro-copy-cinematic {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  max-width: 1200px;
+}
+.editorial-invitation :is(.intro-title-group, .intro-detail-group) {
+  position: static;
+  max-width: none;
+}
+.editorial-invitation .intro-copy-cinematic .intro-title-group h1 {
+  max-width: none;
+  margin: 0;
+  font-size: clamp(3.35rem, 15.5vw, 9rem);
+  line-height: 1;
+  letter-spacing: -.055em;
+}
+.editorial-invitation .intro-name-primary {
+  padding: 0 0 .12em;
+  margin: 0 0 -.07em;
+}
+.editorial-invitation .intro-copy-cinematic .intro-name-secondary {
+  margin: 0 0 0 clamp(1.5rem, 6vw, 5rem);
+  padding-bottom: .1em;
+}
+.editorial-invitation .intro-copy-cinematic .intro-note {
+  max-width: 25rem;
+  margin: 1.25rem 0 0;
+  font-size: clamp(.95rem, 1.5vw, 1.2rem);
+  line-height: 1.65;
+}
+
+/* Three unboxed story beats; numbering forms a fine editorial timeline. */
+.editorial-invitation .opening-quote {
+  margin: 1.5rem 0 2rem;
+}
+.editorial-invitation .opening-quote p {
+  margin: 0;
+  font-size: clamp(2.4rem, 5.5vw, 4.75rem);
+  line-height: 1.08;
+}
+.editorial-invitation .opening-layout {
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: var(--content-gap);
+  align-items: start;
+}
+.editorial-invitation .opening-layout .portrait {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  margin-top: .4rem;
+}
+.editorial-invitation .opening-text { min-width: 0; padding: 0; }
+.editorial-invitation .opening-text h2 {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.1;
+  margin: .2rem 0 1.5rem;
+}
+.story-beats { list-style: none; padding: 0; margin: 0; }
+.story-beats li {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr);
+  gap: .75rem;
+  padding: 1.2rem 0;
+  border-top: 1px solid var(--editorial-rule);
+}
+.story-beats li:first-child { padding-top: .85rem; }
+.story-beat-number {
+  padding-top: .15rem;
+  color: #756747;
+  font-family: var(--serif);
+  font-size: .8rem;
+  font-style: italic;
+}
+.story-beats p { margin: 0; max-width: 60ch; color: #505548; font-size: .95rem; }
+.story-beats strong { color: var(--ink); font-weight: 600; }
+.editorial-invitation .story-signature { margin-top: .75rem; font-size: 1.2rem; }
+.editorial-invitation .opening .story-date {
+  margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--editorial-rule);
+  border-bottom: 0;
+}
+.editorial-invitation .story-date p { font-size: clamp(1.5rem, 4vw, 2.75rem); }
+.editorial-invitation .story-date span { font-size: .7rem; line-height: 1.7; }
+
+/* Terracotta follows a ruled paper edge; information remains in normal flow. */
+.editorial-invitation .couple { border-block: 1px solid rgba(65, 40, 27, .18); }
+.editorial-invitation .section-heading { margin: 0 0 2rem; }
+.editorial-invitation .couple-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: var(--content-gap);
+}
+.editorial-invitation .person { min-width: 0; }
+.editorial-invitation .person h3 {
+  font-size: clamp(1.75rem, 2.8vw, 2.75rem);
+  line-height: 1.15;
+  margin: .65rem 0 1rem;
+  overflow-wrap: normal;
+}
+.editorial-invitation .person p { margin-bottom: 0; font-size: .85rem; line-height: 1.8; }
+.editorial-invitation .couple-photo { aspect-ratio: 4 / 5; }
+.editorial-invitation .wedding-schedule-inner { padding: clamp(1.5rem, 4vw, 3rem) clamp(.75rem, 3vw, 2rem); }
+.editorial-invitation .schedule-note { margin-top: 1.5rem; }
+
+/* Countdown follows its actual contents instead of a 760px minimum panel. */
+.editorial-invitation .date-spread {
+  height: auto;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+  width: calc(100% - 2 * var(--section-gutter));
+  max-width: 1200px;
+  margin-inline: auto;
+}
+.editorial-invitation .date-photo { min-height: 0; aspect-ratio: 4 / 3; }
+.editorial-invitation .date-content { padding: clamp(2rem, 5vw, 4rem); min-width: 0; }
+.editorial-invitation .date-content h2 { font-size: clamp(2.4rem, 4.5vw, 4.5rem); line-height: 1.07; margin: .2em 0 .65em; }
+.editorial-invitation .countdown { padding: 1rem 0; gap: .5rem; }
+.editorial-invitation .countdown strong { font-size: clamp(1.7rem, 3.5vw, 3rem); }
+.editorial-invitation .countdown span { letter-spacing: .06em; }
+.editorial-invitation .small-date { margin-bottom: 0; line-height: 1.7; }
+.editorial-invitation .gallery-compact { padding: clamp(1rem, 3vw, 2rem) var(--section-gutter); }
+
+.editorial-invitation :is(.faq, .gift, .wishes-section) { gap: var(--content-gap); }
+.editorial-invitation .faq { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); border-top: 1px solid var(--editorial-rule); }
+.editorial-invitation .faq-list { min-width: 0; }
+.editorial-invitation .faq-list details { padding: 1.15rem 0; }
+.editorial-invitation .faq-list summary { grid-template-columns: 1.4rem minmax(0, 1fr) auto; gap: .65rem; font-size: 1.15rem; line-height: 1.4; }
+.editorial-invitation .faq-list details p { padding: .85rem 1rem 0 2.05rem; font-size: .92rem; margin-bottom: .25rem; }
+.editorial-invitation .gift { grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--editorial-rule); }
+.editorial-invitation .gift > div > p { max-width: 50ch; font-size: .95rem; }
+.editorial-invitation .bank h3 { line-height: 1.3; font-size: clamp(1.5rem, 3vw, 2rem); }
+.editorial-invitation .bank button { gap: .65rem; min-height: 44px; line-height: 1.5; }
+.editorial-invitation .wishes-section { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.editorial-invitation .wish-name { margin-top: 1.25rem; }
+.editorial-invitation .wish-list { margin-top: 0; }
+.editorial-invitation .wish-form .textarea { font-size: 1.2rem; }
+.editorial-invitation .wish-form textarea { min-height: 10rem; font-size: 1rem; }
+.editorial-invitation .wish-form .primary { min-height: 48px; }
+
+/* Closing stays photo-led, but grows naturally around long copy and safe areas. */
+.editorial-invitation .closing {
+  height: auto;
+  min-height: 0;
+  padding: clamp(9rem, 22vw, 18rem) var(--section-gutter) max(2.5rem, env(safe-area-inset-bottom));
+}
+.editorial-invitation .closing-copy { position: relative; inset: auto; max-width: 34rem; }
+.editorial-invitation .closing-copy h2 { font-size: clamp(2.6rem, 5vw, 4.5rem); line-height: 1.08; }
+.editorial-invitation .closing-copy strong { margin-top: 1.5rem; font-size: clamp(1.75rem, 3.5vw, 3rem); line-height: 1.3; }
+.editorial-invitation .closing-copy > span { display: block; margin-top: .65rem; font-size: .65rem; line-height: 1.7; }
+
+@media (max-width: 760px) {
+  .editorial-invitation { --section-gutter: clamp(1.25rem, 5vw, 2rem); --section-space: 3.5rem; --content-gap: 2rem; }
+  .editorial-invitation .intro-cinematic { min-height: 36rem; padding-top: 5rem; }
+  .editorial-invitation .intro-copy-cinematic .intro-title-group h1 { font-size: clamp(3.1rem, 16vw, 6.2rem); }
+  .editorial-invitation .intro-copy-cinematic .intro-note { max-width: 19rem; }
+  .editorial-invitation .intro-cinematic .intro-tint { background: linear-gradient(180deg, rgba(19, 22, 17, .48), rgba(19, 22, 17, .2) 65%, rgba(19, 22, 17, .35)); }
+  .editorial-invitation .opening-layout { grid-template-columns: 1fr; gap: 1.75rem; }
+  .editorial-invitation .opening-layout .portrait { width: 82%; aspect-ratio: 4 / 3; }
+  .editorial-invitation .opening-quote { margin: 1.25rem 0 1.75rem; }
+  .editorial-invitation .opening-text h2 { font-size: 2rem; margin-bottom: 1.25rem; }
+  .story-beats li { grid-template-columns: 1.3rem minmax(0, 1fr); gap: .7rem; padding-block: 1.1rem; }
+  .story-beats p { font-size: .95rem; }
+  .editorial-invitation .couple-grid { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }
+  .editorial-invitation .couple-photo { width: 84%; aspect-ratio: 4 / 3; }
+  .editorial-invitation .person h3 { font-size: clamp(1.8rem, 7vw, 2.35rem); }
+  .editorial-invitation .person.right { margin-left: 12%; }
+  .editorial-invitation .date-spread { grid-template-columns: minmax(0, 1fr); width: 100%; }
+  .editorial-invitation .date-photo { width: 100%; min-height: 0; aspect-ratio: 3 / 2; }
+  .editorial-invitation .date-content { padding: 2rem var(--section-gutter) 2.5rem; }
+  .editorial-invitation :is(.faq, .gift, .wishes-section) { grid-template-columns: minmax(0, 1fr); }
+  .editorial-invitation .faq-title h2 { margin-bottom: 0; }
+  .editorial-invitation .bank-list { gap: 1.5rem; }
+  .editorial-invitation .closing { padding-top: 10rem; }
+  .editorial-invitation .closing-copy .closing-gratitude { font-size: .95rem; }
+}
+
+@media (min-width: 761px) and (max-width: 1023px) {
+  .editorial-invitation { --section-gutter: 2rem; }
+  .editorial-invitation .couple-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .editorial-invitation .couple-photo { grid-column: 1 / -1; order: -1; width: 70%; margin-inline: auto; aspect-ratio: 3 / 2; }
+  .editorial-invitation .date-content { padding: 2rem; }
+}

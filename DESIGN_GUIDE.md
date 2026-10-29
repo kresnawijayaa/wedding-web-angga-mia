@@ -65,6 +65,18 @@ This document is the implementation contract for the invitation and its admin wo
 
 ## 5. Component contracts
 
+### Invitation editorial layout
+
+- `app/invitation-refinements.css` is the final, invitation-scoped layout layer; keep admin styling outside it.
+- Use shared gutter, section spacing, heading scale, and rule tokens on `.editorial-invitation`.
+- Story, couple, schedule, FAQ, gifts, wishes, and closing use content-driven heights. Do not introduce viewport-height minimums or pin their text to opposite edges.
+- The hero may retain a bounded photographic height; its title and supporting copy stay together in normal flow.
+- Preserve every word of the approved story. Its three paragraphs appear in order as three unboxed, numbered beats.
+- Place the date and location after the complete story, including the signature.
+- Gallery starts with photographs, with two columns on mobile and three on wider screens.
+- Dress code and RSVP are intentionally absent from the invitation.
+- Ambient motion applies only to supporting decorations, pauses offscreen, and is disabled for reduced motion. Initial server and client markup must agree before applying motion preferences.
+
 ### Admin login
 
 - A single-column mobile flow; no fixed submit button.
