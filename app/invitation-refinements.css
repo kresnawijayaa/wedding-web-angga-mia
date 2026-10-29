@@ -1,4 +1,52 @@
 /* Invitation-only editorial rhythm. Kept after legacy styles, outside admin UI. */
+.cover.cover-refined {
+  height: auto;
+  min-height: max(42rem, 100svh);
+  background: #20251e;
+  color: #f5eee2;
+}
+.cover-refined .cover-photo img { object-position: 50% 60%; }
+.cover-refined .cover-shade {
+  background: linear-gradient(180deg, rgba(20, 25, 18, .8), rgba(20, 25, 18, .62) 29%, rgba(20, 25, 18, .1) 43%, rgba(20, 25, 18, .08) 52%, rgba(20, 25, 18, .5) 70%, rgba(20, 25, 18, .94));
+}
+.cover-refined .cover-top { z-index: 2; color: #eee4d2; opacity: .85; }
+.cover-refined .cover-top i { background: rgba(238, 228, 210, .4); }
+.cover-refined .cover-copy {
+  position: relative;
+  inset: auto;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  width: 100%;
+  max-width: none;
+  min-height: inherit;
+  padding: 6.5rem clamp(1.5rem, 7vw, 7rem) 4.5rem;
+}
+.cover-refined .cover-copy > div:nth-last-child(2) { margin-top: auto; padding-top: 2rem; }
+.cover-refined .cover-copy .eyebrow { margin: 0; font-size: .64rem; font-weight: 500; letter-spacing: .2em; color: #eee4d2; }
+.cover-refined .cover-copy h1 { margin: 0; font-size: clamp(3.5rem, 12vw, 9rem); line-height: 1.04; letter-spacing: -.055em; text-wrap: nowrap; }
+.cover-refined .cover-copy h1 > span { display: block; margin-left: .5em; }
+.cover-refined .cover-copy h1 em { display: inline-block; margin: 0 .12em 0 0; font-size: .58em; transform: none; }
+.cover-refined .guest { margin: 0 0 .75rem; padding-left: 1rem; border-color: rgba(238, 228, 210, .45); gap: .35rem; }
+.cover-refined .guest small { font-size: .6rem; letter-spacing: .18em; color: #e3d7c3; opacity: 1; }
+.cover-refined .guest strong { font-size: clamp(1.15rem, 3vw, 1.55rem); line-height: 1.4; font-weight: 450; max-width: 34ch; }
+.cover-refined .primary.light { min-height: 52px; min-width: 0; width: min(100%, 19rem); padding: 1rem 1.25rem; border: 1px solid rgba(238, 228, 210, .7); background: #eee6d7; color: #24291f; font-size: .9rem; }
+.cover-refined .primary svg { width: 19px; height: 19px; }
+.cover-refined .cover-note { right: clamp(1.5rem, 7vw, 7rem); bottom: 1.25rem; font-size: .8rem; color: #e3d7c3; }
+@media (min-width: 761px) {
+  .cover-refined .cover-shade { background: linear-gradient(90deg, rgba(20, 25, 18, .86), rgba(20, 25, 18, .6) 42%, rgba(20, 25, 18, .06) 80%), linear-gradient(0deg, rgba(20, 25, 18, .65), transparent 40%); }
+}
+@media (max-width: 760px) and (orientation: portrait) {
+  .cover-refined .cover-photo img { object-position: 50% 52%; }
+  .cover-refined .cover-copy { padding-top: 6rem; }
+  .cover-refined .cover-copy h1 { font-size: clamp(3rem, 14.5vw, 6rem); }
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  .cover.cover-refined { min-height: 34rem; }
+  .cover-refined .cover-copy { padding-top: 5rem; }
+  .cover-refined .cover-copy h1 { font-size: 4rem; }
+}
+
 .editorial-invitation {
   --section-gutter: max(1.25rem, calc((100vw - 1200px) / 2));
   --section-space: clamp(3.5rem, 7vw, 6rem);

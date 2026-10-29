@@ -74,6 +74,7 @@ This document is the implementation contract for the invitation and its admin wo
 - Preserve every word of the approved story. Its three paragraphs appear in order as three unboxed, numbered beats.
 - Place the date and location after the complete story, including the signature.
 - Cover and opening monogram contain no date. At the end of the opening wipe, retain a matching cream veil over the mounted hero and fade it after the hero image is ready; reduced motion skips this fade.
+- Cover uses an original-derived portrait crop on mobile and a landscape source on larger screens. Image `sizes` must account for the rendered height when `object-fit: cover` enlarges an image beyond viewport width. Keep cover title above the faces and guest/actions below, with dark olive shading behind ivory typography.
 - Gallery starts with photographs, with two columns on mobile and three on wider screens.
 - Dress code and RSVP are intentionally absent from the invitation.
 - Ambient motion applies only to supporting decorations, pauses offscreen, and is disabled for reduced motion. Initial server and client markup must agree before applying motion preferences.

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { useActionState, useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { ArrowDownRight, CalendarDays, Check, ChevronDown, Church, Copy, ExternalLink, Heart, MapPin, Sprout, VolumeX, Wine } from "lucide-react";
@@ -59,6 +59,20 @@ type InvitationProps = {
 };
 
 const initialFormState: FormState = { status: "idle", message: "" };
+
+const coverImageOptions = {
+  alt: "Airlangga and Agata cooking together",
+  fill: true,
+  quality: 90,
+  loading: "eager" as const,
+  fetchPriority: "high" as const,
+};
+const { props: coverLandscape } = getImageProps({
+  ...coverImageOptions, src: "/images/cover-landscape-hd.webp", sizes: "max(100vw, 150svh)",
+});
+const { props: coverPortrait } = getImageProps({
+  ...coverImageOptions, src: "/images/cover-portrait-hd.webp", sizes: "max(100vw, 75svh)",
+});
 
 export function WeddingInvitation({ guest, wishes: approvedWishes }: InvitationProps) {
   const [experience, setExperience] = useState<"cover" | "opening" | "transition" | "hero">("cover");
@@ -152,16 +166,19 @@ export function WeddingInvitation({ guest, wishes: approvedWishes }: InvitationP
 
   if (experience !== "hero") return (
     <AnimatePresence mode="sync">
-    {experience === "cover" ? <motion.main className="cover" key="cover" exit={reduce ? undefined : { opacity: 0, scale: 1.018, filter: "blur(3px)" }} transition={{ duration: .8, ease: [0.22, 1, 0.36, 1] }}>
-      <motion.div className="cover-photo" initial={reduce ? false : { scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}>
-        <Image src="/images/photo-12.webp" alt="Airlangga and Agata cooking together" fill preload quality={90} sizes="100vw" />
+    {experience === "cover" ? <motion.main className="cover cover-refined" key="cover" exit={reduce ? undefined : { opacity: 0 }} transition={{ duration: .8, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.div className="cover-photo" initial={reduce ? false : { scale: 1.025 }} animate={{ scale: 1 }} transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}>
+        <picture>
+          <source media="(max-width: 760px) and (orientation: portrait)" srcSet={coverPortrait.srcSet} sizes={coverPortrait.sizes}/>
+          <img {...coverLandscape}/>
+        </picture>
       </motion.div>
       <div className="cover-shade" />
       <motion.div className="cover-top" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .3, duration: 1 }}><span>A</span><i /> <span>M</span></motion.div>
       <motion.div className="cover-copy" initial={reduce ? false : "hidden"} animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: .16, delayChildren: .45 } } }}>
         {[
           <p className="eyebrow" key="a">We’re getting married</p>,
-          <h1 key="b">Airlangga <em>&</em> Mia</h1>,
+          <h1 key="b">Airlangga <span><em>&</em> Mia</span></h1>,
           <div className="guest" key="d"><small>Specially invited</small><strong>{guest.name}</strong></div>,
           <button className="primary light" onClick={openInvitation} key="e">Open invitation <ArrowDownRight aria-hidden="true"/></button>
         ].map((child, i) => <motion.div key={i} variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: .85, ease: [0.16, 1, 0.3, 1] } } }}>{child}</motion.div>)}
