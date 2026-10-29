@@ -64,6 +64,8 @@ export function WeddingInvitation({ guest, wishes: approvedWishes }: InvitationP
   const [experience, setExperience] = useState<"cover" | "opening" | "transition" | "hero">("cover");
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [musicUnavailable, setMusicUnavailable] = useState(false);
+  const [heroImageReady, setHeroImageReady] = useState(false);
+  const [arrivalComplete, setArrivalComplete] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const openingStartedRef = useRef(0);
   const openingResolvedRef = useRef(false);
@@ -84,6 +86,13 @@ export function WeddingInvitation({ guest, wishes: approvedWishes }: InvitationP
       audioRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (experience !== "hero" || heroImageReady) return;
+    // Keep a slow or unavailable image from trapping guests behind the veil.
+    const timeout = setTimeout(() => setHeroImageReady(true), 3000);
+    return () => clearTimeout(timeout);
+  }, [experience, heroImageReady]);
 
   function revealHeroWhenReady() {
     if (openingResolvedRef.current) return;
@@ -153,7 +162,6 @@ export function WeddingInvitation({ guest, wishes: approvedWishes }: InvitationP
         {[
           <p className="eyebrow" key="a">We’re getting married</p>,
           <h1 key="b">Airlangga <em>&</em> Mia</h1>,
-          <p className="cover-date" key="c">27 December 2026 <span>Muntilan, Magelang</span></p>,
           <div className="guest" key="d"><small>Specially invited</small><strong>{guest.name}</strong></div>,
           <button className="primary light" onClick={openInvitation} key="e">Open invitation <ArrowDownRight aria-hidden="true"/></button>
         ].map((child, i) => <motion.div key={i} variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: .85, ease: [0.16, 1, 0.3, 1] } } }}>{child}</motion.div>)}
@@ -165,7 +173,6 @@ export function WeddingInvitation({ guest, wishes: approvedWishes }: InvitationP
       <div className="opening-film-grain"/>
       <div className="opening-mark" aria-label="Airlangga and Mia">
         <span>A</span><i/><em>&</em><i/><span>M</span>
-        <small>27 · 12 · 2026</small>
       </div>
       <div className="opening-wipe" aria-hidden="true"/>
     </motion.main>}
@@ -174,13 +181,21 @@ export function WeddingInvitation({ guest, wishes: approvedWishes }: InvitationP
 
   return (
     <main className="site editorial-invitation">
+      {!reduce && !arrivalComplete && <motion.div
+        className="invitation-arrival-veil"
+        aria-hidden="true"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: heroImageReady ? 0 : 1 }}
+        transition={{ delay: .12, duration: 1.65, ease: [.4, 0, .2, 1] }}
+        onAnimationComplete={() => { if (heroImageReady) setArrivalComplete(true); }}
+      />}
       <motion.button className={`music${musicPlaying ? " is-playing" : ""}`} type="button" onClick={toggleMusic} disabled={musicUnavailable} aria-pressed={musicPlaying} aria-label={musicUnavailable ? "Background music unavailable" : musicPlaying ? "Pause background music" : "Play background music"} initial={reduce ? false : { opacity: 0, scale: .9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: reduce ? 0 : 3.25, duration: reduce ? 0 : .55, ease: [0.22, 1, 0.36, 1] }}>
         {musicPlaying ? <span className="music-equalizer" aria-hidden="true"><i/><i/><i/></span> : <VolumeX aria-hidden="true" />}
         <span>{musicUnavailable ? "Unavailable" : musicPlaying ? "Music on" : "Music off"}</span>
       </motion.button>
       <section className="intro intro-cinematic full">
-        <motion.div className="intro-photo intro-photo-cinematic" initial={reduce ? false : { opacity: 0, scale: 1.055, filter: "blur(7px) brightness(.68)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px) brightness(1)" }} transition={{ duration: reduce ? 0 : 1.25, ease: [0.22, 1, 0.36, 1] }}>
-          <div className="intro-photo-drift"><Image src="/images/photo-18.webp" alt="Airlangga and Agata smiling in the kitchen" fill preload quality={90} sizes="100vw" /></div>
+        <motion.div className="intro-photo intro-photo-cinematic" initial={reduce ? false : { scale: 1.025 }} animate={{ scale: 1 }} transition={{ duration: reduce ? 0 : 2.2, ease: [0.22, 1, 0.36, 1] }}>
+          <div className="intro-photo-drift"><Image src="/images/photo-18.webp" alt="Airlangga and Agata smiling in the kitchen" fill preload quality={90} sizes="100vw" onLoad={() => setHeroImageReady(true)} onError={() => setHeroImageReady(true)} /></div>
         </motion.div>
         <div className="intro-tint" />
         <div className="intro-copy intro-copy-cinematic">

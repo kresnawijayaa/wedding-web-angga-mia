@@ -31,6 +31,15 @@
 .editorial-invitation .schedule-icon .ambient-detail { margin-bottom: 0; }
 
 /* The opening photograph remains immersive; its title and note share one flow. */
+.invitation-arrival-veil {
+  position: fixed;
+  z-index: 110;
+  inset: 0;
+  background: #eee5d7;
+}
+@media (prefers-reduced-motion: reduce) {
+  .invitation-arrival-veil { display: none; }
+}
 .editorial-invitation .intro-cinematic {
   display: flex;
   align-items: flex-start;
