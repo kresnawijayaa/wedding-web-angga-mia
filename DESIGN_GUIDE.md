@@ -73,6 +73,7 @@ This document is the implementation contract for the invitation and its admin wo
 - The hero may retain a bounded photographic height; its title and supporting copy stay together in normal flow.
 - Preserve every word of the approved story. Its three paragraphs appear in order as three unboxed, numbered beats.
 - Place the date and location after the complete story, including the signature.
+- Cover and opening monogram contain no date. At the end of the opening wipe, retain a matching cream veil over the mounted hero and fade it after the hero image is ready; reduced motion skips this fade.
 - Gallery starts with photographs, with two columns on mobile and three on wider screens.
 - Dress code and RSVP are intentionally absent from the invitation.
 - Ambient motion applies only to supporting decorations, pauses offscreen, and is disabled for reduced motion. Initial server and client markup must agree before applying motion preferences.
